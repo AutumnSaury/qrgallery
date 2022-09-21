@@ -1,8 +1,8 @@
 from watchdog.observers import Observer
-from LskyApis import LskyApis
-from NewPicsHandler import NewPicsHandler
+from classes.LskyApis import LskyApis
+from classes.NewPicsHandler import NewPicsHandler
 from MyQR import myqr
-from Silence import Silence
+from classes.Silence import Silence
 from dotenv import load_dotenv
 import logging
 import os
@@ -15,6 +15,7 @@ load_dotenv()
 # 日志输出设置
 logging.basicConfig(
     level=logging.INFO,
+    datefmt="%m/%d %H:%M:%S",
     format='%(asctime)s [%(levelname)s]: %(message)s'
 )
 
@@ -54,9 +55,9 @@ def qr_gen(path):
             save_name=img_info["name"] + "_qr.png",
             save_dir=QR_DIR
         )
-    logging.info("二维码已保存至" + img_info["name"] + "qr.png")
+    logging.info("二维码已保存至" + img_info["name"] + "_qr.png")
     try:
-        os.startfile(QR_DIR + "\\" + img_info["name"] + "qr.png")
+        os.startfile(QR_DIR + "\\" + img_info["name"] + "_qr.png")
     except:
         raise Exception("尝试打开二维码文件时发生错误")
 
@@ -64,6 +65,7 @@ def qr_gen(path):
 # 创建并启动Observer线程
 ob = Observer()
 ob.schedule(NewPicsHandler(qr_gen), OBSERVED_DIR)
+logging.info("已启动")
 ob.start()
 
 try:
