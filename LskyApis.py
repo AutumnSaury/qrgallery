@@ -18,7 +18,7 @@ class LskyApis:
         except:
             raise Exception("尝试登录时发生网络错误")
 
-        # self.token = "Bearer " + response.json()["data"]["token"]
+        self.token = "Bearer " + r.json()["data"]["token"]
         self.api_root = api_root
         self.public_headers = {
             "Authorization": self.token,
@@ -32,8 +32,9 @@ class LskyApis:
                 r = requests.post(
                     self.api_root + "/upload",
                     headers={
-                        "Content-Type": "multipart/form-data"
-                    } + self.public_headers,
+                        **self.public_headers,
+                        # **{"Content-Type": "multipart/form-data"}
+                    },
                     files={
                         "file": img_file
                     }
