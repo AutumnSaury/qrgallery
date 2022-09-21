@@ -31,10 +31,7 @@ class LskyApis:
             with open(path, "rb") as img_file:
                 r = requests.post(
                     self.api_root + "/upload",
-                    headers={
-                        **self.public_headers,
-                        # **{"Content-Type": "multipart/form-data"}
-                    },
+                    headers=self.public_headers,
                     files={
                         "file": img_file
                     }
