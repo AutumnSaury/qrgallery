@@ -1,5 +1,5 @@
 from watchdog.observers import Observer
-from classes.LskyApis import LskyApis
+from classes.APIs.LskyApis import LskyApis
 from classes.NewPicsHandler import NewPicsHandler
 from MyQR import myqr
 from classes.Silence import Silence
@@ -8,8 +8,8 @@ import logging
 import os
 import re
 
-# 打包前请注释以下两行
-from dotenv import load_dotenv
+# 从.env读取环境变量
+# 打包前请注释该行
 load_dotenv()
 
 # 日志输出设置
