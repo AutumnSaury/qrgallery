@@ -1,5 +1,5 @@
 import requests
-from ImgInterface import ImgInterface
+from .ImgInterface import ImgInterface
 
 class LskyApis(ImgInterface):
     # 构造时获取token
@@ -39,4 +39,4 @@ class LskyApis(ImgInterface):
                 raise Exception()
         except:
             raise Exception("文件上传失败")
-        return r.json()["data"]
+        return r.json()["data"]["links"]["url"]

@@ -8,6 +8,7 @@ class OpenFileWhileCreating:
         self.path = path
 
     def __enter__(self):
+        file_completely_created = False
         while not file_completely_created:
             try:
                 self.img_file = open(self.path, "rb")
