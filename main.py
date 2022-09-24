@@ -3,8 +3,10 @@ from classes.APIs.LskyApis import LskyApis
 from classes.NewPicsHandler import NewPicsHandler
 from MyQR import myqr
 from classes.Silence import Silence
+from classes.OpenFileWhileCreating import OpenFileWhileCreating
 from dotenv import load_dotenv
 import logging
+import platform
 import os
 import re
 
@@ -38,7 +40,8 @@ lsky = LskyApis(API_ROOT, USER_INFO)
 
 
 def qr_gen(path):
-    img_info = lsky.upload_img(path)
+    with OpenFileWhileCreating(path) as img_file:
+        img_info = lsky.upload_img(img_file)
     img_file_name = re.search(r"(?<=\\)[^\\]+\w{3,4}$", path).group()
     logging.info("已上传图片" + img_file_name +
                  "，图片URL：" + img_info["links"]["url"])
@@ -56,11 +59,13 @@ def qr_gen(path):
             save_dir=QR_DIR
         )
     logging.info("二维码已保存至" + img_info["name"] + "_qr.png")
-    try:
-        os.startfile(QR_DIR + "\\" + img_info["name"] + "_qr.png")
-    except:
-        raise Exception("尝试打开二维码文件时发生错误")
-
+    if platform.system() == "Windows":
+        try:
+            os.startfile(QR_DIR + "\\" + img_info["name"] + "_qr.png")
+        except:
+            raise Exception("尝试打开二维码文件时发生错误")
+    else:
+        logging.debug("非目标运行环境，未自动打开二维码")
 
 # 创建并启动Observer线程
 ob = Observer()

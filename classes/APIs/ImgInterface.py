@@ -12,10 +12,10 @@ class ImgInterface(ABC):
     def __init__(self):
         pass
 
-    @abstractmethod
-    # 使用构造时传入的参数鉴权
-    def auth(self) -> None:
-        pass
+    # @abstractmethod
+    # # 使用构造时传入的参数鉴权
+    # def auth(self) -> None:
+    #     pass
 
     @abstractmethod
     # 上传图片

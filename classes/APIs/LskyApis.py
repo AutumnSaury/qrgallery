@@ -1,7 +1,5 @@
 import requests
 from ImgInterface import ImgInterface
-from OpenFileWhileCreating import OpenFileWhileCreating
-
 
 class LskyApis(ImgInterface):
     # 构造时获取token
@@ -28,18 +26,17 @@ class LskyApis(ImgInterface):
         }
 
     # 上传图片，返回图片URL
-    def upload_img(self, path: str):
-        with OpenFileWhileCreating(path) as img_file:
-            try:
-                r = requests.post(
-                    self.api_root + "/upload",
-                    headers=self.public_headers,
-                    files={
-                        "file": img_file
-                    }
-                )
-                if not r.json()["status"]:
-                    raise Exception()
-            except:
-                raise Exception("文件上传失败")
+    def upload_img(self, img_file):
+        try:
+            r = requests.post(
+                self.api_root + "/upload",
+                headers=self.public_headers,
+                files={
+                    "file": img_file
+                }
+            )
+            if not r.json()["status"]:
+                raise Exception()
+        except:
+            raise Exception("文件上传失败")
         return r.json()["data"]
